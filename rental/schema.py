@@ -23,27 +23,28 @@ class Query(graphene.AbstractType):
         return models.MovieRental.objects.get(pk=rid[1])
 
 class CreateRentalMutation(graphene.Mutation):
-    class Input:
-        movieId = graphene.Int()
+    class Arguments:
+        movieId = graphene.Int(required=True)
 
     status = graphene.Int()
     formErrors = graphene.String()
     message = graphene.Field(MovieRentalType)
 
     @staticmethod
-    def mutate(root, args, context, info):
-        if not context.user.is_auth():
+    def mutate(self, info, movieId):
+        context = info.context
+        if not context.user.is_authenticated:
             return CreateRentalMutation(status=403)
-        movieId = args.get('movieId')
-        if not movieId:
-            return CreateRentalMutation(status=400,
-            formErrors= json.dumps(
-                {'message' : ['Please enter a movieId']}
-            ))
-            obj = models.MovieRental.objects.create(
-                user = context.user, movieId = movieId
-            )
-            return CreateRentalMutation(status=200, message=obj)
+        if not movieId: #do some validation here
+            return CreateRentalMutation(
+                status=400,
+                formErrors = json.dumps(
+                    {'message' : ['Please enter a movieId']}
+                ))
+        obj = models.MovieRental.objects.create(
+            user = context.user, movieId = movieId
+        )
+        return CreateRentalMutation(status=200, message=obj)
 
 
 class Mutation(graphene.AbstractType):
