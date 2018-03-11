@@ -34,6 +34,12 @@ class PopularMovieType(graphene.ObjectType):
     overview = graphene.String()
     release_date = graphene.String()
 
+class MovieReviewType(graphene.ObjectType):
+    id = graphene.ID()
+    author = graphene.String()
+    content = graphene.String()
+    url = graphene.String()
+
 class Query(graphene.ObjectType):
     all_rentals = graphene.List(MovieRentalType)
 
@@ -49,12 +55,18 @@ class Query(graphene.ObjectType):
     popular_movies = graphene.List(PopularMovieType)
 
     def resolve_popular_movies(self, info, **args):
-        print("this is called")
         popular = requests.get('https://api.themoviedb.org/3/movie/popular?api_key=8879bf0d7d0370ed12d9245c5c774ae1&language=en-US&page=1')
-        content = json.loads(popular.content)["results"]
-        jsonout = json2obj(json.dumps(content))
-        return jsonout
+        content = json.loads(popular.content)['results']
+        return json2obj(json.dumps(content))
 
+    # movie_review = graphene.List(MovieReviewType, id=graphene.Int())
+    movie_review = graphene.List(MovieReviewType, id=graphene.Int())
+
+    def resolve_movie_review(self, info, **args):
+        movie_id = args.get('id')
+        reviews = requests.get('https://api.themoviedb.org/3/movie/'+ str(movie_id) +'/reviews?api_key=8879bf0d7d0370ed12d9245c5c774ae1&language=en-US&page=1')
+        content = json.loads(reviews.content)['results']
+        return json2obj(json.dumps(content))
 
 class CreateRentalMutation(graphene.Mutation):
     class Arguments:
