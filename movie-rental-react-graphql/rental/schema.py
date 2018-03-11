@@ -19,7 +19,7 @@ class MovieRentalType(DjangoObjectType):
         model = models.MovieRental
         interfaces = (graphene.Node, )
 
-class PopularMovieType(graphene.ObjectType):
+class MovieDetailType(graphene.ObjectType):
     vote_count = graphene.Int()
     id = graphene.ID()
     video = graphene.Boolean()
@@ -52,7 +52,7 @@ class Query(graphene.ObjectType):
         rid = from_global_id(args.get('id'))
         return models.MovieRental.objects.get(pk=rid[1])
 
-    popular_movies = graphene.List(PopularMovieType)
+    popular_movies = graphene.List(MovieDetailType)
 
     def resolve_popular_movies(self, info, **args):
         popular = requests.get('https://api.themoviedb.org/3/movie/popular?api_key=8879bf0d7d0370ed12d9245c5c774ae1&language=en-US&page=1')
@@ -66,6 +66,14 @@ class Query(graphene.ObjectType):
         movie_id = args.get('id')
         reviews = requests.get('https://api.themoviedb.org/3/movie/'+ str(movie_id) +'/reviews?api_key=8879bf0d7d0370ed12d9245c5c774ae1&language=en-US&page=1')
         content = json.loads(reviews.content)['results']
+        return json2obj(json.dumps(content))
+
+    movie_query_by_title = graphene.List(MovieDetailType, query=graphene.String())
+
+    def resolve_movie_query_by_title(self, info, **args):
+        query = args.get('query')
+        query_results = requests.get('https://api.themoviedb.org/3/search/movie?api_key=8879bf0d7d0370ed12d9245c5c774ae1&language=en-US&query=' + query + '&page=1&include_adult=false')
+        content = json.loads(query_results.content)['results']
         return json2obj(json.dumps(content))
 
 class CreateRentalMutation(graphene.Mutation):
