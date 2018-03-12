@@ -4,6 +4,7 @@ from graphql_relay.node.node import from_global_id
 import json
 import requests
 from collections import namedtuple
+from django.contrib.auth.models import User
 
 from . import models
 
@@ -18,6 +19,10 @@ class MovieRentalType(DjangoObjectType):
     class Meta:
         model = models.MovieRental
         interfaces = (graphene.Node, )
+
+class UserType(DjangoObjectType):
+    class Meta:
+        model = User
 
 class MovieDetailType(graphene.ObjectType):
     vote_count = graphene.Int()
@@ -75,6 +80,14 @@ class Query(graphene.ObjectType):
         query_results = requests.get('https://api.themoviedb.org/3/search/movie?api_key=8879bf0d7d0370ed12d9245c5c774ae1&language=en-US&query=' + query + '&page=1&include_adult=false')
         content = json.loads(query_results.content)['results']
         return json2obj(json.dumps(content))
+
+    current_user = graphene.Field(UserType)
+
+    def resolve_current_user(self, info, **args):
+        context = info.context
+        if not context.user.is_authenticated:
+            return None
+        return context.user
 
 class CreateRentalMutation(graphene.Mutation):
     class Arguments:

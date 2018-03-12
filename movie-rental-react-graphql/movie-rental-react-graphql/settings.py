@@ -60,6 +60,8 @@ GRAPHENE = {
     'SCHEMA': 'movie-rental-react-graphql.schema.schema',
 }
 
+JWT_VERIFY_EXPIRATION = False
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -69,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'movie-rental-react-graphql.middleware.JWTMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
