@@ -5,7 +5,11 @@ import json
 import requests
 from collections import namedtuple
 from django.contrib.auth.models import User
-
+from django.core.cache import cache
+from django.conf import settings
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+ 
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 from . import models
 
 
@@ -14,6 +18,17 @@ def _json_object_hook(d):
 
 def json2obj(data):
     return json.loads(data, object_hook=_json_object_hook)
+
+
+def get_popular_movies():
+    if 'popular_movies' in cache:
+        popular_movies = cache.get('popular_movies')
+        return json2obj(json.dumps(popular_movies))
+    else:
+        popular = requests.get('https://api.themoviedb.org/3/movie/popular?api_key=8879bf0d7d0370ed12d9245c5c774ae1&language=en-US&page=1')
+        content = json.loads(popular.content)['results']
+        cache.set('popular_movies', content, timeout = CACHE_TTL)
+        return json2obj(json.dumps(content))
 
 class MovieRentalType(DjangoObjectType):
     class Meta:
@@ -60,9 +75,7 @@ class Query(graphene.ObjectType):
     popular_movies = graphene.List(MovieDetailType)
 
     def resolve_popular_movies(self, info, **args):
-        popular = requests.get('https://api.themoviedb.org/3/movie/popular?api_key=8879bf0d7d0370ed12d9245c5c774ae1&language=en-US&page=1')
-        content = json.loads(popular.content)['results']
-        return json2obj(json.dumps(content))
+        return get_popular_movies()
 
     # movie_review = graphene.List(MovieReviewType, id=graphene.Int())
     movie_review = graphene.List(MovieReviewType, id=graphene.Int())

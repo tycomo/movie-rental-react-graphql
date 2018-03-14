@@ -62,6 +62,17 @@ GRAPHENE = {
 
 JWT_VERIFY_EXPIRATION = False
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://tjc-movies.redis.cache.windows.net:6379/',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': 'TyCHVHWJoNW8LjfJHqCbnHC6gIpvd9zDgRMjjfexXz4='
+        }
+    }
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -69,9 +80,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'movie-rental-react-graphql.middleware.JWTMiddleware',
+    #'movie-rental-react-graphql.middleware.JWTMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 

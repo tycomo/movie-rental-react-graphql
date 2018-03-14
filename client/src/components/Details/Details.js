@@ -1,6 +1,5 @@
 import React from 'react'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag';
+import { gql, graphql } from 'react-apollo'
 
 // This is new:
 const mutation = gql`
@@ -23,8 +22,9 @@ const query = gql`
 `
 class Details extends React.Component {
     componentWillUpdate(nextProps) {
+        console.log(nextProps);
         if (!nextProps.data.loading && nextProps.data.currentUser === null) {
-        window.location.replace('/login/')
+        //window.location.replace('/login/')
         }
     }
 

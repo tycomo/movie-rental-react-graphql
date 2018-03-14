@@ -12,7 +12,7 @@ export default class Login extends React.Component {
         res.json().then(res => {
           if (res.token) {
             localStorage.setItem('token', res.token)
-            window.location.replace('/')
+            window.location.replace('/details')
           }
         })
       })
