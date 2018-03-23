@@ -6,10 +6,14 @@ import  SelectedRental  from './SelectedRental';
 
 const query = gql`
  query {
-    popularMovies {
+    popularMovies{
       id,
       title,
-      posterPath
+      voteAverage,
+      posterPath,
+      backdropPath,
+      releaseDate,
+      overview
     }
   }
 `
@@ -22,10 +26,10 @@ class Home extends React.Component {
   }
 
   selectMovie = (movie) => {
-    const showSelected = this.state.showSelected;
-    console.log(movie)
-    return this.setState({selectedMovie: movie, showSelected: !showSelected})
+    return this.setState({selectedMovie: movie, showSelected: true})
   }
+
+  
 
   render() {
     let { data } = this.props
@@ -34,8 +38,8 @@ class Home extends React.Component {
     }
     return(
         <Container>
-          {this.state.showSelected ? <SelectedRental movie={this.state.selectedMovie} id={this.state.selectedMovie.id}/> : <span>hide</span>}
-          <Header as="h2" inverted>Popular Rentals</Header>
+          {this.state.showSelected ? <SelectedRental movie={this.state.selectedMovie} id={this.state.selectedMovie.id}/> : null}
+          <Header as="h2">Popular Rentals</Header>
           <Card.Group itemsPerRow={5}>
             {data.popularMovies.map(movie => (
                 <Card key={movie.id} onClick={() => this.selectMovie(movie)}>
