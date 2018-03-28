@@ -1,0 +1,10 @@
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: AKIAJAYCTUWQQ6TRJIRQ
+  secret_access_key:
+    secure: FYhH9sudqeB5YR6ZQ39WHzuTkcTdA8kKsl2sz9hH7DhNYr432ESfk+E9R4JuUV1WPEwXX632w+6vN5qDH9jxoKY3OXvqof6wJJ1R12bcNAxNq6BqPuJOuadMSJwEXJ5PIt+of93xxh+4S9akTDwITmFxj12VWUex9OvXYE8eNI3xTnsKRWpT8+h20JfHTcJC1HD32jMofB8V4ircxhuQus4+0HhB40FijW/CwhP11KZuzrl81WsTX8T1U0h3zJKqUakicl/eE4vQ8H9OHsmeSnMX3M7Ol1LyIZ/CbCGtuLr+jn8plX/Fc4CxEdSQuqVyqC8v0ILJbxvm1S0+s+m3Lwul5C5OpqXwk+U2v7L0En1OKCqizCpiAkt3GA5IribxOceVdAM6BymqYVQXe5+bcd/3eKU530g2lH5WqNp5Jzel6HxdsAVZhR72Uv0cLzAIsyWIh51rLaiyp1cXdWOtAfpdw7Bgc3CReb3s8S4GW3LCwPCj/OK8FhhDmvw2sv/7I8NxMj5zOF0dErPLadNcS0IGD07PoveZQUyHjalVHaeXx9RMbzIe5oea8GdjJGjOquuxX00eeIq8h027Nb2G+miGVuTMahQQJZ7lozhiGw4SoM5N+KjFo9+4HUW2msN2HIJQDQCwpdpvafwOB5c5ex506Nx0NgaocAz4T5pPVLs=
+  region: us-east-2
+  app: django-movie-rental
+  env: movie-rental
+  on:
+    repo: tycomo/movie-rental-react-graphql
