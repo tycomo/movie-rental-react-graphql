@@ -65,7 +65,7 @@ JWT_VERIFY_EXPIRATION = False
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://tjc-movies.redis.cache.windows.net:6379/',
+        'LOCATION': 'redis://movie-rental.qsewkd.0001.use2.cache.amazonaws.com:6379/',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'PASSWORD': 'TyCHVHWJoNW8LjfJHqCbnHC6gIpvd9zDgRMjjfexXz4='
