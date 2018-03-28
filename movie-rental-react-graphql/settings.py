@@ -25,7 +25,7 @@ SECRET_KEY = '^)0d1h^hvev%1!b93eke2)893xgu(0+ze3d+5+d+5t!x)x=1pp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['movie-rental.rimvppqzgc.us-east-2.elasticbeanstalk.com']
 
 
 # Application definition
@@ -154,3 +154,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
