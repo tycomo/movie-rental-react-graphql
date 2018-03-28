@@ -67,8 +67,7 @@ CACHES = {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://movie-rental.qsewkd.0001.use2.cache.amazonaws.com:6379/',
         'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'PASSWORD': 'TyCHVHWJoNW8LjfJHqCbnHC6gIpvd9zDgRMjjfexXz4='
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
         }
     }
 }
