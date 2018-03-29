@@ -1,10 +1,10 @@
 import pytest
-from mixer.movie-rental-react-graphql.django import mixer
+from mixer.backend.django import mixer
 from graphql_relay.node.node import to_global_id
 from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory
 
-from . import schema   
+from .. import schema
 
 pytestmark = pytest.mark.django_db
 
@@ -24,7 +24,7 @@ def test_resolve_rental():
     q = schema.Query()
     id = to_global_id('MovieRentalType', movie.pk)
     res = q.resolve_rental({'id'}, None, None)
-    assert res = movie, 'Should return the requested movie'
+    assert res == movie, 'Should return the requested movie'
 
 def test_create_rental_mutation():
     user = mixer.blend('auth.User')

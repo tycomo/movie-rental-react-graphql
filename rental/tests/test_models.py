@@ -1,5 +1,5 @@
 import pytest
-from mixer.movie-rental-react-graphql.django import mixer
+from mixer.backend.django import mixer
 
 pytestmark = pytest.mark.django_db
 
