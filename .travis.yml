@@ -16,3 +16,5 @@ deploy:
   bucket_name: "elasticbeanstalk-us-east-2-543959668371"
   on:
     repo: tycomo/movie-rental-react-graphql
+  run:
+  - "python manage.py collectstatic"
