@@ -13,5 +13,6 @@ deploy:
   region: us-east-2
   app: django-movie-rental
   env: movie-rental
+  bucket_name: "elasticbeanstalk-us-east-2-543959668371"
   on:
     repo: tycomo/movie-rental-react-graphql
