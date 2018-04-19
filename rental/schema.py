@@ -101,8 +101,7 @@ class Query(graphene.ObjectType):
         return json2obj(json.dumps(content))
 
     users = graphene.List(UserType)
-
-    @login_required
+    
     def resolve_users(self, info, **args):
         return get_user_model().objects.all()
 
