@@ -109,7 +109,7 @@ class Query(graphene.ObjectType):
     def resolve_viewer(self, info):
         user = info.context.user
         if user.is_anonymous:
-            raise Exception('Not logged!')
+            raise Exception(info)
         return user
 
 class CreateRentalMutation(graphene.Mutation):
