@@ -6,7 +6,6 @@ from graphql_relay.node.node import from_global_id
 
 import json
 import requests
-from graphql_jwt.decorators import login_required
 
 from django.contrib.auth import get_user_model
 
