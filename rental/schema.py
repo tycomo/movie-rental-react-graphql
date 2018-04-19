@@ -45,10 +45,6 @@ class MovieRentalType(DjangoObjectType):
         model = models.MovieRental
         interfaces = (graphene.Node, )
 
-class UserType(DjangoObjectType):
-    class Meta:
-        model = User
-
 class MovieDetailType(graphene.ObjectType):
     vote_count = graphene.Int()
     id = graphene.ID()
