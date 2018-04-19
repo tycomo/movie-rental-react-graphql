@@ -104,13 +104,10 @@ class Query(graphene.ObjectType):
     def resolve_users(self, info):
         return get_user_model().objects.all()
 
-    viewer = graphene.Field(UserType)
+    me = graphene.Field(UserType)
 
-    def resolve_viewer(self, info):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception(info)
-        return user
+    def resolve_me(self, info, **kwargs):
+        return info.context.user
 
 class CreateRentalMutation(graphene.Mutation):
     class Arguments:
