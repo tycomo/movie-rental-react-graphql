@@ -3,11 +3,14 @@ import graphene
 import graphql_jwt
 from graphene_django.types import DjangoObjectType
 from graphql_relay.node.node import from_global_id
+
 import json
 import requests
 from graphql_jwt.decorators import login_required
 
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
 from django.core.cache import cache
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
@@ -32,6 +35,10 @@ def get_popular_movies():
         content = json.loads(popular.content)['results']
         cache.set('popular_movies', content, timeout = CACHE_TTL)
         return json2obj(json.dumps(content))
+
+class UserType(DjangoObjectType):
+    class Meta:
+        model = get_user_model()
 
 class MovieRentalType(DjangoObjectType):
     class Meta:
@@ -97,6 +104,12 @@ class Query(graphene.ObjectType):
         content = json.loads(query_results.content)['results']
         return json2obj(json.dumps(content))
 
+    users = graphene.List(UserType)
+
+    @login_required
+    def resolve_users(self, info, **args):
+        return get_user_model().objects.all()
+
     viewer = graphene.Field(UserType)
 
     @login_required
@@ -127,8 +140,26 @@ class CreateRentalMutation(graphene.Mutation):
         )
         return CreateRentalMutation(status=200, message=obj)
 
+class CreateUser(graphene.Mutation):
+    user = graphene.Field(UserType)
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+        email = graphene.String(required=True)
+
+    def mutate(self, info, username, password, email):
+        user = get_user_model()(
+            username=username,
+            email=email,
+        )
+        user.set_password(password)
+        user.save()
+
+        return CreateUser(user=user)
 
 class Mutation(graphene.ObjectType):
+    create_user = CreateUser.Field()
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
