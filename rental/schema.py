@@ -153,8 +153,5 @@ class CreateUser(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
-    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
-    verify_token = graphql_jwt.Verify.Field()
-    refresh_token = graphql_jwt.Refresh.Field()
     create_rental = CreateRentalMutation.Field()
 
