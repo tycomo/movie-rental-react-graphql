@@ -13,7 +13,7 @@ SECRET_KEY = '^)0d1h^hvev%1!b93eke2)893xgu(0+ze3d+5+d+5t!x)x=1pp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['movie-rental.rimvppqzgc.us-east-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['movie-rental.rimvppqzgc.us-east-2.elasticbeanstalk.com', 'movie-rental.tycomo.com']
 
 
 # Application definition
