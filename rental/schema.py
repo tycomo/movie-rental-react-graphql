@@ -8,7 +8,6 @@ import json
 import requests
 from graphql_jwt.decorators import login_required
 
-from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
 from django.core.cache import cache
@@ -101,13 +100,13 @@ class Query(graphene.ObjectType):
         return json2obj(json.dumps(content))
 
     users = graphene.List(UserType)
-    
-    def resolve_users(self, info, **args):
+
+    def resolve_users(self, info):
         return get_user_model().objects.all()
 
     viewer = graphene.Field(UserType)
 
-    def resolve_viewer(self, info, **args):
+    def resolve_viewer(self, info):
         user = info.context.user
         if user.is_anonymous:
             raise Exception('Not logged!')
