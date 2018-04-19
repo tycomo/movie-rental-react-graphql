@@ -36,3 +36,4 @@ six==1.11.0
 text-unidecode==1.2
 typing==3.6.4
 urllib3==1.22
+django-graphql-jwt 0.1.9

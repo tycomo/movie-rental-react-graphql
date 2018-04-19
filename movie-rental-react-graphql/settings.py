@@ -36,7 +36,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
@@ -47,8 +46,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 GRAPHENE = {
     'SCHEMA': 'movie-rental-react-graphql.schema.schema',
 }
-
-JWT_VERIFY_EXPIRATION = False
 
 CACHES = {
     'default': {
@@ -68,7 +65,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'movie-rental-react-graphql.middleware.JWTMiddleware',
+    'graphql_jwt.middleware.JSONWebTokenMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -114,6 +111,11 @@ else:
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 
 # Password validation

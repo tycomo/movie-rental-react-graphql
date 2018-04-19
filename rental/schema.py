@@ -1,14 +1,17 @@
+from collections import namedtuple
 import graphene
+import graphql_jwt
 from graphene_django.types import DjangoObjectType
 from graphql_relay.node.node import from_global_id
 import json
 import requests
-from collections import namedtuple
+from graphql_jwt.decorators import login_required
+
 from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
- 
+
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 from . import models
 
@@ -94,13 +97,11 @@ class Query(graphene.ObjectType):
         content = json.loads(query_results.content)['results']
         return json2obj(json.dumps(content))
 
-    current_user = graphene.Field(UserType)
+    viewer = graphene.Field(UserType)
 
-    def resolve_current_user(self, info, **args):
-        context = info.context
-        if not context.user.is_authenticated:
-            return None
-        return context.user
+    @login_required
+    def resolve_viewer(self, info, **args):
+        return info.context.user
 
 class CreateRentalMutation(graphene.Mutation):
     class Arguments:
@@ -128,5 +129,8 @@ class CreateRentalMutation(graphene.Mutation):
 
 
 class Mutation(graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
     create_rental = CreateRentalMutation.Field()
 
