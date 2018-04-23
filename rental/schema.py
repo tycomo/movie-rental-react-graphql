@@ -89,7 +89,6 @@ class Query(graphene.ObjectType):
     def resolve_popular_movies(self, info, **args):
         return get_popular_movies()
 
-    # movie_review = graphene.List(MovieReviewType, id=graphene.Int())
     movie_review = graphene.List(MovieReviewType, id=graphene.Int())
 
     def resolve_movie_review(self, info, **args):
@@ -119,6 +118,9 @@ class Query(graphene.ObjectType):
 class CreateRentalMutation(graphene.Mutation):
     class Arguments:
         movieId = graphene.Int(required=True)
+        title = graphene.String(required=True)
+        posterPathURL = graphene.String(required=True)
+
 
     status = graphene.Int()
     formErrors = graphene.String()
@@ -136,7 +138,7 @@ class CreateRentalMutation(graphene.Mutation):
                     {'message' : ['No movie selected']}
                 ))
         obj = models.MovieRental.objects.create(
-            user = context.user, movieId = movieId
+            user = context.user, movieId = movieId, title = title, posterPathURL = posterPathURL
         )
         return CreateRentalMutation(status=200, message=obj)
 
@@ -185,4 +187,5 @@ class CreateUser(graphene.Mutation):
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     create_rental = CreateRentalMutation.Field()
+    return_rental = ReturnRentalMutation.Field()
 
