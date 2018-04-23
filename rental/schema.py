@@ -81,7 +81,7 @@ class Query(graphene.ObjectType):
     def resolve_my_rentals(self, info, **args):
         context = info.context
         if context.user.is_authenticated:
-            return models.MovieRental.objects.get(user = context.user)
+            return models.MovieRental.objects.filter(user = context.user)
 
     popular_movies = graphene.List(MovieDetailType)
 
