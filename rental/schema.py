@@ -76,6 +76,13 @@ class Query(graphene.ObjectType):
         rid = from_global_id(args.get('id'))
         return models.MovieRental.objects.get(pk=rid[1])
 
+    my_rentals = graphene.List(MovieRentalType, id=graphene.ID())
+
+    def resolve_my_rentals(self, info, **args):
+        context = info.context
+        if context.user.is_authenticated:
+            return models.MovieRental.objects.get(User = context.user)
+
     popular_movies = graphene.List(MovieDetailType)
 
     def resolve_popular_movies(self, info, **args):
@@ -125,7 +132,7 @@ class CreateRentalMutation(graphene.Mutation):
             return CreateRentalMutation(
                 status=400,
                 formErrors = json.dumps(
-                    {'message' : ['Please enter a movieId']}
+                    {'message' : ['No movie selected']}
                 ))
         obj = models.MovieRental.objects.create(
             user = context.user, movieId = movieId
