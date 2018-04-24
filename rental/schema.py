@@ -127,7 +127,7 @@ class CreateRentalMutation(graphene.Mutation):
     message = graphene.Field(MovieRentalType)
 
     @staticmethod
-    def mutate(self, info, movieId):
+    def mutate(self, info, movieId, title, posterPathURL):
         context = info.context
         if not context.user.is_authenticated:
             return CreateRentalMutation(status=403)
