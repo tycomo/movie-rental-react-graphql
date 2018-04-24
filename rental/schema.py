@@ -144,7 +144,7 @@ class CreateRentalMutation(graphene.Mutation):
 
 class ReturnRentalMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        id = graphene.String(required=True)
 
     status = graphene.Int()
     formErrors = graphene.String()
