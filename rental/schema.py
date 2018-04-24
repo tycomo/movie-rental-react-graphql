@@ -164,7 +164,7 @@ class ReturnRentalMutation(graphene.Mutation):
         rid= from_global_id(movie_id_returned)
         obj = models.MovieRental.objects.get(pk = rid[1])
         obj.returnDate = datetime.now()
-        obj.save(['returnDate'])
+        obj.save()
         return ReturnRentalMutation(status=200, message=obj)
 
 class CreateUser(graphene.Mutation):
