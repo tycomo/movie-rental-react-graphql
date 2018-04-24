@@ -156,12 +156,12 @@ class ReturnRentalMutation(graphene.Mutation):
         if not context.user.is_authenticated:
             return ReturnRentalMutation(status=403)
         if not id:
-            return CreateRentalMutation(
+            return ReturnRentalMutation(
                 status=400,
                 formErrors = json.dumps(
                     {'message' : ['No movie selected to return']}
                 ))
-        obj = models.MovieRental.objects.get(id = id)
+        obj = models.MovieRental.objects.get(pk = id)
         obj.returnDate = datetime.now()
         obj.save(['returnDate'])
         return ReturnRentalMutation(status=200, message=obj)
