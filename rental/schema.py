@@ -6,7 +6,7 @@ from graphql_relay.node.node import from_global_id
 
 import json
 import requests
-import datetime
+from datetime import datetime
 
 from django.contrib.auth import get_user_model
 
@@ -144,14 +144,14 @@ class CreateRentalMutation(graphene.Mutation):
 
 class ReturnRentalMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.String(required=True)
+        movie_id_returned = graphene.String(required=True)
 
     status = graphene.Int()
     formErrors = graphene.String()
     message = graphene.Field(MovieRentalType)
 
     @staticmethod
-    def mutate(self, info, id):
+    def mutate(self, info, movie_id_returned):
         context = info.context
         if not context.user.is_authenticated:
             return ReturnRentalMutation(status=403)
@@ -161,7 +161,8 @@ class ReturnRentalMutation(graphene.Mutation):
                 formErrors = json.dumps(
                     {'message' : ['No movie selected to return']}
                 ))
-        obj = models.MovieRental.objects.get(pk = id)
+        rid= from_global_id(movie_id_returned)
+        obj = models.MovieRental.objects.get(pk = rid[1])
         obj.returnDate = datetime.now()
         obj.save(['returnDate'])
         return ReturnRentalMutation(status=200, message=obj)
