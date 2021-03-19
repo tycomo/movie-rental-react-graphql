@@ -6,7 +6,7 @@ coverage==4.5.1
 Django==2.0.3
 django-cors-headers==2.2.0
 django-redis==4.9.0
-djangorestframework==3.7.7
+djangorestframework==3.11.2
 djangorestframework-jwt==1.11.0
 Faker==0.8.8
 freeze==1.0.10
